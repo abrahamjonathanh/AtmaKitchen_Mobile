@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166611713986",
+    "project_id": "atmakitchen-83833",
+    "storage_bucket": "atmakitchen-83833.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166611713986:android:6b492df0186d09e929e05b",
+        "android_client_info": {
+          "package_name": "com.example.atmakitchen_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiAfQ2W2-a3TUgvdlx9ix5SIuVjr1QDq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
