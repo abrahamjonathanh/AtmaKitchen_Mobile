@@ -131,4 +131,17 @@ class UserClient {
       return Future.error(e.toString());
     }
   }
+
+  static Future<Response> getAllEmployee(String accessToken) async {
+    try {
+      var response = await get(Uri.http(url, "/api/karyawan"), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      });
+
+      return response;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }

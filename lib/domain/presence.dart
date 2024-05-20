@@ -6,6 +6,8 @@ class Presence {
   String? nama;
   int? jumlahAbsent;
   int? jumlahHadir;
+  bool? presensi;
+  String? role;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
@@ -16,6 +18,8 @@ class Presence {
       this.nama,
       this.jumlahAbsent,
       this.jumlahHadir,
+      this.presensi,
+      this.role,
       this.createdAt,
       this.updatedAt,
       this.deletedAt});
@@ -26,6 +30,8 @@ class Presence {
         "nama": nama,
         "jumlah_absent": jumlahAbsent,
         "jumlah_hadir": jumlahHadir,
+        "presensi": presensi,
+        "role": role,
         "created_at": createdAt,
         "updated_at": updatedAt,
         "deleted_at": deletedAt

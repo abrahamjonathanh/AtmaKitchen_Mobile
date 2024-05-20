@@ -8,6 +8,7 @@ class AtmaTextField extends StatefulWidget {
   final String? title;
   final String? hintText;
   final ValueChanged<String>? onChange;
+  final ValueChanged<String>? onSubmitted;
   final TextEditingController? controller;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
@@ -28,6 +29,7 @@ class AtmaTextField extends StatefulWidget {
       this.hintText,
       this.controller,
       this.onChange,
+      this.onSubmitted,
       this.obscureText = false,
       this.validator,
       this.keyboardType = TextInputType.text,
@@ -83,6 +85,7 @@ class _AtmaTextFieldState extends State<AtmaTextField> {
             inputFormatters: widget.inputFormat,
             readOnly: widget.isReadOnly,
             onChanged: widget.onChange,
+            onFieldSubmitted: widget.onSubmitted,
             controller: widget.controller,
             obscureText: _obsecureText,
             validator: (val) {

@@ -2,6 +2,9 @@ import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
+import 'package:atmakitchen_mobile/presentation/auth/login.dart';
+import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
+import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
 import 'package:atmakitchen_mobile/presentation/profile/user_transaction_history.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_list_tile.dart';
@@ -112,7 +115,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             const SizedBox(
               height: 16.0,
             ),
-            AtmaListTile(
+            const AtmaListTile(
               title: "Informasi Pengguna",
               icon: Icons.person,
             ),
@@ -124,11 +127,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               icon: Icons.shopping_bag_rounded,
               onTap: () => Get.to(const UserTransactionHistory()),
             ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            AtmaListTile(
+              title: "Keluar",
+              icon: Icons.logout,
+              onTap: () => Get.to(const LoginScreen()),
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: const AtmaBottomBar(
+      bottomNavigationBar: AtmaBottomBar(
         currentIndex: 1,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        routes: <Widget Function()>[
+          () => const UserHomeScreen(),
+          () => const UserProfileScreen(),
+        ],
       ),
     );
   }

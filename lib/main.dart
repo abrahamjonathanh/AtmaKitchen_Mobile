@@ -1,16 +1,16 @@
-// import 'package:atmakitchen_mobile/firebase_options.dart';
+import 'package:atmakitchen_mobile/firebase_options.dart';
 import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   // Ensure initialized
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   // Firebase initialize
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MainApp());
 }

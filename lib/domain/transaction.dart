@@ -15,6 +15,7 @@ class Transaction {
   String? verifiedAt;
   String? acceptedAt;
   List<DetailTransaction>? detailPesanan;
+  TransactionStatus? statusPesananLatest;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
@@ -34,9 +35,37 @@ class Transaction {
       this.verifiedAt,
       this.acceptedAt,
       this.detailPesanan,
+      this.statusPesananLatest,
       this.createdAt,
       this.updatedAt,
       this.deletedAt});
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      idPesanan: json['id_pesanan'].toString(),
+      idMetodePembayaran: json['id_metode_pembayaran'] as int,
+      idPelanggan: json['id_pelanggan'] as int,
+      tglOrder: json['tgl_order'].toString(),
+      totalDiskonPoin: json['total_diskon_poin'] as int,
+      totalPesanan: json['total_pesanan'] as int,
+      totalSetelahDiskon: json['total_setelah_diskon'] as int,
+      totalDibayarkan: json['total_dibayarkan'] as int?,
+      totalTip: json['total_tip'] as int?,
+      jenisPengiriman: json['jenis_pengiriman'].toString(),
+      buktiPembayaran: json['bukti_pembayaran']?.toString(),
+      verifiedAt: json['verified_at']?.toString(),
+      acceptedAt: json['accepted_at']?.toString(),
+      detailPesanan: (json['detail_pesanan'] as List<dynamic>?)
+          ?.map((detail) => DetailTransaction.fromJson(detail))
+          .toList(),
+      statusPesananLatest: json['status_pesanan_latest'] != null
+          ? TransactionStatus.fromJson(json['status_pesanan_latest'])
+          : null,
+      createdAt: json['created_at']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
+      deletedAt: json['deleted_at']?.toString(),
+    );
+  }
 }
 
 class DetailTransaction {
@@ -81,6 +110,31 @@ class DetailTransaction {
       updatedAt: json['updated_at'].toString(),
       deletedAt: json['deleted_at'].toString(),
       produk: json['produk'] != null ? Product.fromJson(json['produk']) : null,
+    );
+  }
+}
+
+class TransactionStatus {
+  final int idStatusPesanan;
+  final String? idPesanan;
+  final String? idKaryawan;
+  final String status;
+  final String? createdAt;
+
+  TransactionStatus(
+      {required this.idStatusPesanan,
+      this.idPesanan,
+      this.idKaryawan,
+      required this.status,
+      this.createdAt});
+
+  factory TransactionStatus.fromJson(Map<String, dynamic> json) {
+    return TransactionStatus(
+      idStatusPesanan: json['id_status_pesanan'],
+      idPesanan: json['id_pesanan'].toString(),
+      idKaryawan: json['id_karyawan'].toString(),
+      status: json['status'].toString(),
+      createdAt: json['created_at'].toString(),
     );
   }
 }

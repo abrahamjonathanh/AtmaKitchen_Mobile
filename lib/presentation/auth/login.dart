@@ -1,14 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
+import 'package:atmakitchen_mobile/domain/user.dart';
 import 'package:atmakitchen_mobile/presentation/auth/forgot_password.dart';
 import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
+import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_button.dart';
+import 'package:atmakitchen_mobile/widgets/atma_notification.dart';
 import 'package:atmakitchen_mobile/widgets/atma_text_field.dart';
 // import 'package:atmakitchen_mobile/widgets/atma_notification.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -21,18 +25,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // final NotificationSetup _notification = NotificationSetup();
+  final NotificationSetup _notification = NotificationSetup();
 
-  // void getDeviceKey() async {
-  //   if (Platform.isAndroid) {
-  //     final String? token = await FirebaseMessaging.instance.getToken();
-  //     debugPrint(token);
-  //   }
-  // }
+  void getDeviceKey() async {
+    if (Platform.isAndroid) {
+      final String? token = await FirebaseMessaging.instance.getToken();
+      debugPrint(token);
+    }
+  }
 
   @override
   void initState() {
-    // _notification.configurePushNotifications(context);
+    _notification.configurePushNotifications(context);
     super.initState();
   }
 
@@ -57,16 +61,29 @@ class _LoginScreenState extends State<LoginScreen> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
         box.write('token', data['access_token']);
-        return Get.to(const PresenceScreen());
+
+        var response = await UserClient.getCurrentUser(box.read("token"));
+
+        if (response['data'] != null) {
+          var data = response['data'];
+          Account accountData = Account.fromJson(data['akun']);
+
+          Customer customerData = Customer(
+              idAkun: data['id_akun'],
+              idPelanggan: data['id_pelanggan'],
+              nama: data['nama'],
+              akun: accountData);
+          debugPrint(customerData.idPelanggan.toString());
+          box.write("id_user", customerData.idPelanggan.toString());
+          if (accountData.role!.role == 'Customer') {
+            return Get.to(const UserProfileScreen());
+          }
+          return Get.to(const PresenceScreen());
+        }
+
+        showSnackBar(data['error']);
       }
-
-      showSnackBar(data['error']);
     }
-
-    // void onGetCurrentUserHandler() async {
-    //   var response = await UserClient.getCurrentUser(accessToken!);
-    //   debugPrint(response.toString());
-    // }
 
     return Scaffold(
         appBar: AppBar(),
@@ -82,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 8.0,
               ),
+              AtmaButton(textButton: "Get KEY", onPressed: getDeviceKey),
               Form(
                   key: formKey,
                   child: Column(
