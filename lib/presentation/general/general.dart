@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:get/get.dart';
 
 class GeneralScreen extends StatelessWidget {
   final List<Map<String, dynamic>> statistics = [
