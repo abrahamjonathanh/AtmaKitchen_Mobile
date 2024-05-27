@@ -6,8 +6,8 @@ import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
 import 'package:atmakitchen_mobile/presentation/auth/forgot_password.dart';
+import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
-import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_button.dart';
 import 'package:atmakitchen_mobile/widgets/atma_text_field.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
           debugPrint(customerData.idPelanggan.toString());
           box.write("id_user", customerData.idPelanggan.toString());
           if (accountData.role!.role == 'Customer') {
-            return Get.to(const UserProfileScreen());
+            return Get.to(const UserHomeScreen());
           }
           return Get.to(const PresenceScreen());
         }
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 8.0,
               ),
-              AtmaButton(textButton: "Get KEY", onPressed: getDeviceKey),
+              // AtmaButton(textButton: "Get KEY", onPressed: getDeviceKey),
               Form(
                   key: formKey,
                   child: Column(

@@ -3,6 +3,7 @@ import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
 import 'package:atmakitchen_mobile/presentation/auth/login.dart';
+import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/profile/user_transaction_history.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
@@ -125,6 +126,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               title: "Riwayat Transaksi",
               icon: Icons.shopping_bag_rounded,
               onTap: () => Get.to(const UserTransactionHistory()),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            AtmaListTile(
+              title: "Informasi Umum",
+              icon: Icons.info,
+              onTap: () => Get.to(const GeneralScreen()),
             ),
             const SizedBox(
               height: 8.0,

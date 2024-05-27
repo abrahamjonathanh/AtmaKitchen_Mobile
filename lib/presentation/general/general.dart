@@ -1,45 +1,54 @@
+import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
+import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
+import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
+import 'package:atmakitchen_mobile/widgets/atma_button.dart';
 import 'package:flutter/material.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GeneralScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> statistics = [
-    {"title": "Testimoni", "count": 203},
-    {"title": "Produk", "count": 33},
-    {"title": "Partner", "count": 10},
-  ];
-
-  final List<List<Map<String, String>>> testimonialData = [
-    [
-      {
-        "avatar": "assets/avatars/Stephanie.png",
-        "fullname": "Stephanie",
-        "username": "@stephanie78",
-        "comment": "AtmaKitchen gue beli kemarin lgsg jatuh cinta. Seenak itu woii 😍😍💕",
-      },
-      {
-        "avatar": "assets/avatars/Jessica.png",
-        "fullname": "Jessica",
-        "username": "@jessy",
-        "comment": "Barusan dapat oleh2 dr teman, gila enak banget browniesnya! Lgsung cari tau dia beli dimana, rupanya di AtmaKitchen 😃",
-      },
-    ],
-  ];
+  const GeneralScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //   final List<Map<String, dynamic>> statistics = [
+    //   {"title": "Testimoni", "count": 203},
+    //   {"title": "Produk", "count": 33},
+    //   {"title": "Partner", "count": 10},
+    // ];
+
+    const List<List<Map<String, String>>> testimonialData = [
+      [
+        {
+          "avatar": "assets/avatars/Stephanie.png",
+          "fullname": "Stephanie",
+          "username": "@stephanie78",
+          "comment":
+              "AtmaKitchen gue beli kemarin lgsg jatuh cinta. Seenak itu woii 😍😍💕",
+        },
+        {
+          "avatar": "assets/avatars/Jessica.png",
+          "fullname": "Jessica",
+          "username": "@jessy",
+          "comment":
+              "Barusan dapat oleh2 dr teman, gila enak banget browniesnya! Lgsung cari tau dia beli dimana, rupanya di AtmaKitchen 😃",
+        },
+      ],
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("AtmaKitchen"),
+        title: const Text("AtmaKitchen"),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Hero Section
               HeroSection(),
-             
+
               SizedBox(height: 32),
               TestimonialsSection(testimonialData: testimonialData),
               SizedBox(height: 32),
@@ -48,18 +57,37 @@ class GeneralScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: AtmaBottomBar(
+        currentIndex: 1,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        routes: <Widget Function()>[
+          () => const UserHomeScreen(),
+          () => const UserProfileScreen(),
+        ],
+      ),
     );
   }
 }
 
 class HeroSection extends StatelessWidget {
+  const HeroSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8.0),
@@ -74,41 +102,43 @@ class HeroSection extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.notifications, color: Colors.orange),
-              SizedBox(width: 8),
-              Text("AtmaKitchen sekarang tersedia di Android dan iOS!"),
+              Icon(Icons.notifications, color: TW3Colors.orange.shade600),
+              const SizedBox(width: 8),
+              const Expanded(
+                child:
+                    Text("AtmaKitchen sekarang tersedia di Android dan iOS!"),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Center(
           child: Image.asset(
             'assets/images/Hero.png',
             fit: BoxFit.cover,
           ),
         ),
-        SizedBox(height: 16),
-        Text(
+        const SizedBox(height: 16),
+        const Text(
           "Atma Kitchen",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        SizedBox(height: 8),
-        Text(
+        const SizedBox(height: 8),
+        const Text(
           "Selamat datang di Atma Kitchen, destinasi terbaik untuk menemukan berbagai pilihan roti, kue, dan produk lezat lainnya yang bermutu tinggi. Kami berkomitmen untuk memberikan pelayanan dan kualitas terbaik.",
         ),
-        SizedBox(height: 16),
-         ElevatedButton(
-            onPressed: () => _launchURL('https://atma-kitchen-v2.vercel.app/'),
-            child: Text("Pesan Sekarang"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            ),
-          ),
-       
+        const SizedBox(height: 16),
+        AtmaButton(
+          onPressed: () => _launchURL('https://atma-kitchen-v2.vercel.app/'),
+          textButton: "Pesan Sekarang",
+        ),
       ],
     );
   }
+
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -118,25 +148,23 @@ class HeroSection extends StatelessWidget {
   }
 }
 
-
-
 class TestimonialsSection extends StatelessWidget {
   final List<List<Map<String, String>>> testimonialData;
 
-  TestimonialsSection({required this.testimonialData});
+  const TestimonialsSection({super.key, required this.testimonialData});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "Apa Kata Mereka?",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
-        Text("Pendapat pelanggan tentang menu dan pelayanan kami."),
-        SizedBox(height: 16),
+        const SizedBox(height: 8),
+        const Text("Pendapat pelanggan tentang menu dan pelayanan kami."),
+        const SizedBox(height: 16),
         Column(
           children: testimonialData.map((testimonialGroup) {
             return Column(
@@ -151,10 +179,10 @@ class TestimonialsSection extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(testimonial["username"]!),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           testimonial["comment"]!,
-                          style: TextStyle(color: Colors.orange),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -170,13 +198,16 @@ class TestimonialsSection extends StatelessWidget {
 }
 
 class CTASection extends StatelessWidget {
+  const CTASection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      width: double.infinity,
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.red, Colors.orange],
+          colors: [Colors.red, TW3Colors.orange.shade600],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -185,23 +216,24 @@ class CTASection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Tunggu apa lagi?",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Pesan dan kumpulkan poinmu sekarang!",
             style: TextStyle(color: Colors.white),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => _launchURL('https://atma-kitchen-v2.vercel.app/'),
-            child: Text("Pesan Sekarang"),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
+            child: const Text("Pesan Sekarang"),
           ),
         ],
       ),

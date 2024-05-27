@@ -2,7 +2,6 @@ import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/transaction.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
-import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
 import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_text_field.dart';

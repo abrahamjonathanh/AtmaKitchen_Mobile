@@ -7,7 +7,7 @@ class Product {
   String ukuran;
   int hargaJual;
   ProductThumbnail? thumbnail;
-  int readyStock;
+  int? readyStock;
 
   Product(
       {required this.idProduk,
@@ -18,7 +18,7 @@ class Product {
       required this.ukuran,
       required this.hargaJual,
       this.thumbnail,
-      required this.readyStock});
+      this.readyStock});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -29,8 +29,11 @@ class Product {
       kapasitas: json['kapasitas'] as int,
       ukuran: json['ukuran'].toString(),
       hargaJual: json['harga_jual'] as int,
-      thumbnail: ProductThumbnail.fromJson(json['thumbnail']),
-      readyStock: json['ready_stock'] as int,
+      thumbnail: json['thumbnail'] != null
+          ? ProductThumbnail.fromJson(json['thumbnail'])
+          : null,
+      readyStock:
+          json['ready_stock'] != null ? json['ready_stock'] as int : null,
     );
   }
 }
@@ -103,9 +106,10 @@ class DetailHampers {
 
   factory DetailHampers.fromJson(Map<String, dynamic> json) {
     return DetailHampers(
-        idDetailHampers: json['id_detail_hampers'] as int,
-        idProdukHampers: json['id_produk_hampers'] as int,
-        idProduk: json['id_produk'] as int,
-        produk: Product.fromJson(json['produk']));
+      idDetailHampers: json['id_detail_hampers'] as int,
+      idProdukHampers: json['id_produk_hampers'] as int,
+      idProduk: json['id_produk'] as int,
+      produk: json['produk'] != null ? Product.fromJson(json['produk']) : null,
+    );
   }
 }

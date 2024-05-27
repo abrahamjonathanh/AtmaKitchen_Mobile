@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/product_client.dart';
 import 'package:atmakitchen_mobile/domain/product.dart';
+import 'package:atmakitchen_mobile/presentation/home/product_detail.dart';
 import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -59,17 +62,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
     Map<String, dynamic> data = jsonDecode(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      List<Hampers> hampersData = (data['data'] as List)
-          .map((item) => Hampers(
-                idProdukHampers: item['id_produk_hampers'],
-                nama: item['nama'],
-                hargaJual: item['harga_jual'] as int,
-                image: item['image'],
-                // detailHampers: (item['detail_hampers'] as List)
-                //     .map((detail) => DetailHampers.fromJson(detail))
-                //     .toList()
-              ))
-          .toList();
+      List<Hampers> hampersData =
+          (data['data'] as List).map((item) => Hampers.fromJson(item)).toList();
 
       setState(() {
         hampers = Future.value(hampersData);
@@ -115,7 +109,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                "Produk Kami",
+                style: AStyle.textStyleTitleLg,
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
               GridView.builder(
                 itemCount: filteredProduct.length,
                 shrinkWrap: true,
@@ -128,13 +130,30 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 ),
                 itemBuilder: (context, index) {
                   final product = filteredProduct[index];
-                  return AtmaProductCard(
-                      thumbnail: product.thumbnail?.image,
-                      nama: product.nama,
-                      ukuran: product.ukuran,
-                      hargaJual: product.hargaJual,
-                      readyStock: product.readyStock);
+                  return GestureDetector(
+                    onTap: () => {
+                      Get.to(ProductDetailScreen(
+                        produk: filteredProduct[index],
+                      ))
+                    },
+                    child: AtmaProductCard(
+                        thumbnail: product.thumbnail?.image,
+                        nama: product.nama,
+                        ukuran: product.ukuran,
+                        hargaJual: product.hargaJual,
+                        readyStock: product.readyStock),
+                  );
                 },
+              ),
+              const SizedBox(
+                height: 24.0,
+              ),
+              Text(
+                "Produk Hampers",
+                style: AStyle.textStyleTitleLg,
+              ),
+              const SizedBox(
+                height: 16.0,
               ),
               GridView.builder(
                 itemCount: filteredHampers.length,
@@ -148,10 +167,17 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 ),
                 itemBuilder: (context, index) {
                   final product = filteredHampers[index];
-                  return AtmaProductCard(
-                    thumbnail: product.image,
-                    nama: product.nama,
-                    hargaJual: product.hargaJual,
+                  return GestureDetector(
+                    onTap: () => {
+                      Get.to(ProductDetailHampersScreen(
+                        hampers: filteredHampers[index],
+                      ))
+                    },
+                    child: AtmaProductCard(
+                      thumbnail: product.image,
+                      nama: product.nama,
+                      hargaJual: product.hargaJual,
+                    ),
                   );
                 },
               ),
