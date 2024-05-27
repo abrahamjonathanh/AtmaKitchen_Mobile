@@ -39,9 +39,9 @@ class NotificationSetup {
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessagingHandler);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print("==========");
-      print("=====${message.notification!.body}=====");
-      print("==========");
+      // print("==========");
+      // print("=====${message.notification!.body}=====");
+      // print("==========");
       if (message.notification != null) {
         createOrderNotifications(
             title: message.notification!.title,

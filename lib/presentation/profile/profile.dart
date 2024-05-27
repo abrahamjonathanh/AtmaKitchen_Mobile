@@ -4,7 +4,6 @@ import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
 import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
-import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
 import 'package:atmakitchen_mobile/presentation/profile/user_transaction_history.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_list_tile.dart';
