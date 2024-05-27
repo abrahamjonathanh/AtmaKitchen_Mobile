@@ -7,6 +7,7 @@ class Product {
   String ukuran;
   int hargaJual;
   ProductThumbnail? thumbnail;
+  int readyStock;
 
   Product(
       {required this.idProduk,
@@ -16,7 +17,8 @@ class Product {
       required this.kapasitas,
       required this.ukuran,
       required this.hargaJual,
-      this.thumbnail});
+      this.thumbnail,
+      required this.readyStock});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -28,6 +30,7 @@ class Product {
       ukuran: json['ukuran'].toString(),
       hargaJual: json['harga_jual'] as int,
       thumbnail: ProductThumbnail.fromJson(json['thumbnail']),
+      readyStock: json['ready_stock'] as int,
     );
   }
 }
@@ -57,5 +60,52 @@ class ProductThumbnail {
       updatedAt: json['updated_at'].toString(),
       deletedAt: json['deleted_at'].toString(),
     );
+  }
+}
+
+class Hampers {
+  int idProdukHampers;
+  String nama;
+  int hargaJual;
+  String image;
+  List<DetailHampers>? detailHampers;
+
+  Hampers(
+      {required this.idProdukHampers,
+      required this.nama,
+      required this.hargaJual,
+      required this.image,
+      this.detailHampers});
+
+  factory Hampers.fromJson(Map<String, dynamic> json) {
+    return Hampers(
+        idProdukHampers: json['id_produk_hampers'] as int,
+        nama: json['nama'].toString(),
+        hargaJual: json['harga_jual'] as int,
+        image: json['image'].toString(),
+        detailHampers: (json['detail_hampers'] as List<dynamic>?)
+            ?.map((detail) => DetailHampers.fromJson(detail))
+            .toList());
+  }
+}
+
+class DetailHampers {
+  int idDetailHampers;
+  int? idProdukHampers;
+  int? idProduk;
+  Product? produk;
+
+  DetailHampers(
+      {required this.idDetailHampers,
+      this.idProdukHampers,
+      this.idProduk,
+      this.produk});
+
+  factory DetailHampers.fromJson(Map<String, dynamic> json) {
+    return DetailHampers(
+        idDetailHampers: json['id_detail_hampers'] as int,
+        idProdukHampers: json['id_produk_hampers'] as int,
+        idProduk: json['id_produk'] as int,
+        produk: Product.fromJson(json['produk']));
   }
 }
