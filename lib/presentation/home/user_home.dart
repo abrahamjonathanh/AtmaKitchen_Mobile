@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/product_client.dart';
 import 'package:atmakitchen_mobile/domain/product.dart';
+import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/product_detail.dart';
 import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
@@ -186,20 +187,25 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         ),
       ),
       bottomNavigationBar: AtmaBottomBar(
-        currentIndex: 0,
+        currentIndex: 1,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outlined),
             label: 'Profile',
           ),
         ],
         routes: <Widget Function()>[
+          () => const GeneralScreen(),
           () => const UserHomeScreen(),
-          () => const UserProfileScreen(),
+          () => const UserUnauthenticatedScreen()
         ],
       ),
     );

@@ -141,7 +141,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             AtmaListTile(
               title: "Keluar",
               icon: Icons.logout,
-              onTap: () => Get.to(const LoginScreen()),
+              onTap: () => Get.to(const GeneralScreen()),
             ),
           ],
         ),

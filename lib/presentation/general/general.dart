@@ -1,8 +1,11 @@
+import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_button.dart';
+import 'package:atmakitchen_mobile/widgets/atma_list_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,6 +42,7 @@ class GeneralScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("AtmaKitchen"),
+        automaticallyImplyLeading: false,
       ),
       body: const SingleChildScrollView(
         child: Padding(
@@ -58,20 +62,25 @@ class GeneralScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: AtmaBottomBar(
-        currentIndex: 1,
+        currentIndex: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outlined),
             label: 'Profile',
           ),
         ],
         routes: <Widget Function()>[
+          () => const GeneralScreen(),
           () => const UserHomeScreen(),
-          () => const UserProfileScreen(),
+          () => const UserUnauthenticatedScreen()
         ],
       ),
     );
@@ -246,5 +255,58 @@ class CTASection extends StatelessWidget {
     } else {
       throw 'Could not launch $url';
     }
+  }
+}
+
+class UserUnauthenticatedScreen extends StatefulWidget {
+  const UserUnauthenticatedScreen({super.key});
+
+  @override
+  State<UserUnauthenticatedScreen> createState() =>
+      _UserUnauthenticatedScreenState();
+}
+
+class _UserUnauthenticatedScreenState extends State<UserUnauthenticatedScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Masuk"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            AtmaListTile(
+              title: "Masuk",
+              icon: Icons.login,
+              onTap: () => Get.to(const LoginScreen()),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: AtmaBottomBar(
+        currentIndex: 2,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outlined),
+            label: 'Profile',
+          ),
+        ],
+        routes: <Widget Function()>[
+          () => const GeneralScreen(),
+          () => const UserHomeScreen(),
+          () => const UserUnauthenticatedScreen()
+        ],
+      ),
+    );
   }
 }
