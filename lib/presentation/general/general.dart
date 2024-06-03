@@ -1,6 +1,5 @@
 import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
-import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_button.dart';
 import 'package:atmakitchen_mobile/widgets/atma_list_tile.dart';

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/variables.dart';
 import 'package:http/http.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 // GetX Connect Docs
 // class UserProvider extends GetConnect {
@@ -36,6 +37,10 @@ class UserClient {
       if (response.statusCode == 401) {
         // If credentials are not valid
       }
+
+      var externalId =
+          "123456789"; // You will supply the external id to the OneSignal SDK
+      OneSignal.login(externalId);
 
       return response;
     } catch (e) {

@@ -2,7 +2,6 @@ import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
-import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/profile/user_transaction_history.dart';

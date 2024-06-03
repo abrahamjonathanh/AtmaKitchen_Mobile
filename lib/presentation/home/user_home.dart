@@ -5,7 +5,6 @@ import 'package:atmakitchen_mobile/data/product_client.dart';
 import 'package:atmakitchen_mobile/domain/product.dart';
 import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/product_detail.dart';
-import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
 import 'package:atmakitchen_mobile/widgets/atma_bottom_bar.dart';
 import 'package:atmakitchen_mobile/widgets/atma_product_card.dart';
 import 'package:flutter/material.dart';
