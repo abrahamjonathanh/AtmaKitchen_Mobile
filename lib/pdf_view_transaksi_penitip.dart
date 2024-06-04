@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:atmakitchen_mobile/domain/transaksi_penitip.dart';
+import 'package:atmakitchen_mobile/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
@@ -90,10 +91,10 @@ class _PdfViewTransaksiPenitipState extends State<PdfViewTransaksiPenitip> {
               .map((transaksi) => [
                     transaksi.namaProduk,
                     transaksi.qty.toString(),
-                    transaksi.hargaJual.toString(),
-                    transaksi.total.toString(),
-                    transaksi.komisi.toString(),
-                    transaksi.yangDiterima.toString(),
+                    CurrencyFormat.convertToIdr(transaksi.hargaJual, 0),
+                    CurrencyFormat.convertToIdr(transaksi.total, 0),
+                    CurrencyFormat.convertToIdr(transaksi.komisi, 0),
+                    CurrencyFormat.convertToIdr(transaksi.yangDiterima, 0),
                   ])
               .toList();
 
@@ -104,7 +105,7 @@ class _PdfViewTransaksiPenitipState extends State<PdfViewTransaksiPenitip> {
               '',
               '',
               'Total',
-              totalYangDiterima.toString(),
+              CurrencyFormat.convertToIdr(totalYangDiterima, 0),
             ]);
           }
 

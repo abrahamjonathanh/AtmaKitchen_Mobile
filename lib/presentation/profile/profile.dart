@@ -3,6 +3,8 @@ import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
 import 'package:atmakitchen_mobile/domain/user.dart';
 import 'package:atmakitchen_mobile/pdf_view.dart';
+import 'package:atmakitchen_mobile/pdf_view_pemasukan_pengeluaran.dart';
+import 'package:atmakitchen_mobile/pdf_view_transaksi_penitip.dart';
 import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
@@ -180,6 +182,9 @@ class AdminProfileScreen extends StatefulWidget {
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
   Future<Employee>? employee;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _yearController = TextEditingController();
+  int _selectedMonth = 1;
   DateTimeRange? selectedDates = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 7)),
       end: DateTime.now());
@@ -218,115 +223,224 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           style: AStyle.textStyleTitleLg,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FutureBuilder(
-                future: employee,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FutureBuilder(
+                  future: employee,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error: ${snapshot.error}"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      final data = snapshot.data!;
+
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                              radius: 48.0,
+                              backgroundImage: NetworkImage(
+                                  data.akun!.profileImage!,
+                                  scale: 1.0)),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Text(
+                            data.nama,
+                            style: AStyle.textStyleTitleMd,
+                          ),
+                          const SizedBox(
+                            height: 4.0,
+                          ),
+                          Text(
+                            data.akun!.email,
+                            style: AStyle.textStyleNormal,
+                          ),
+                        ],
+                      );
+                    }
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Error: ${snapshot.error}"),
-                    );
-                  }
-                  if (snapshot.hasData) {
-                    final data = snapshot.data!;
-
-                    return Column(
-                      children: [
-                        CircleAvatar(
-                            radius: 48.0,
-                            backgroundImage: NetworkImage(
-                                data.akun!.profileImage!,
-                                scale: 1.0)),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        Text(
-                          data.nama,
-                          style: AStyle.textStyleTitleMd,
-                        ),
-                        const SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          data.akun!.email,
-                          style: AStyle.textStyleNormal,
-                        ),
-                      ],
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }),
-            const SizedBox(
-              height: 16.0,
-            ),
-            const AtmaListTile(
-              title: "Informasi Pengguna",
-              icon: Icons.person,
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            AtmaListTile(
-              title: "Informasi Umum",
-              icon: Icons.info,
-              onTap: () => Get.to(const GeneralScreen()),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            AtmaListTile(
-              title: "Laporan Stok Bahan Baku",
-              icon: Icons.file_copy,
-              onTap: () => Get.to(const PdfView()),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            GestureDetector(
-              onTap: () async {
-                final DateTimeRange? dateTimeRange = await showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime.now());
-
-                if (dateTimeRange != null) {
-                  setState(() {
-                    selectedDates = dateTimeRange;
-                  });
-
-                  Get.to(() => PDFBahanBakuUsageScreen(
-                      startDate: selectedDates!.start.toString(),
-                      endDate: selectedDates!.end.toString()));
-                }
-                debugPrint(selectedDates.toString());
-              },
-              child: const AtmaListTile(
-                title: "Laporan Penggunaan Bahan Baku",
-                icon: Icons.info,
+                  }),
+              const SizedBox(
+                height: 16.0,
               ),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            AtmaListTile(
-              title: "Keluar",
-              icon: Icons.logout,
-              onTap: () => {box.remove('token'), Get.to(const GeneralScreen())},
-            ),
-          ],
+              const AtmaListTile(
+                title: "Informasi Pengguna",
+                icon: Icons.person,
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              AtmaListTile(
+                title: "Informasi Umum",
+                icon: Icons.info,
+                onTap: () => Get.to(const GeneralScreen()),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              AtmaListTile(
+                title: "Laporan Stok Bahan Baku",
+                icon: Icons.file_copy,
+                onTap: () => Get.to(const PdfView()),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  final DateTimeRange? dateTimeRange =
+                      await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now());
+
+                  if (dateTimeRange != null) {
+                    setState(() {
+                      selectedDates = dateTimeRange;
+                    });
+
+                    Get.to(() => PDFBahanBakuUsageScreen(
+                        startDate: selectedDates!.start.toString(),
+                        endDate: selectedDates!.end.toString()));
+                  }
+                  debugPrint(selectedDates.toString());
+                },
+                child: const AtmaListTile(
+                  title: "Laporan Penggunaan Bahan Baku",
+                  icon: Icons.info,
+                ),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: _yearController,
+                      decoration: const InputDecoration(labelText: 'Year'),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a year';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<int>(
+                      value: _selectedMonth,
+                      decoration: const InputDecoration(labelText: 'Month'),
+                      items: List.generate(12, (index) {
+                        return DropdownMenuItem(
+                          value: index + 1,
+                          child: Text('${index + 1}'),
+                        );
+                      }),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedMonth = value!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    int year = int.parse(_yearController.text);
+                    int month = _selectedMonth;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewPemasukanPengeluaran(
+                          year: year,
+                          month: month,
+                        ),
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit_document),
+                    SizedBox(width: 8),
+                    Text(
+                      "Cetak Laporan Pemasukan Pengeluaran",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    int year = int.parse(_yearController.text);
+                    int month = _selectedMonth;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewTransaksiPenitip(
+                          year: year,
+                          month: month,
+                        ),
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit_document),
+                    SizedBox(width: 8),
+                    Text(
+                      "Cetak Laporan Rekap Transaksi Penitip",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              AtmaListTile(
+                title: "Keluar",
+                icon: Icons.logout,
+                onTap: () =>
+                    {box.remove('token'), Get.to(const GeneralScreen())},
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: AtmaBottomBar(

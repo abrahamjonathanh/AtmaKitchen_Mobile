@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:atmakitchen_mobile/domain/pengeluaran_pemasukan.dart';
+import 'package:atmakitchen_mobile/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
@@ -82,14 +83,14 @@ class _PdfViewPemasukanPengeluaranState
       combinedList.add({
         "description": item.keys.first,
         "pemasukan": item.values.first.toString(),
-        "pengeluaran": "-"
+        "pengeluaran": "0"
       });
     });
 
     data.pengeluaran?.forEach((item) {
       combinedList.add({
         "description": item.keys.first,
-        "pemasukan": "-",
+        "pemasukan": "0",
         "pengeluaran": item.values.first.toString()
       });
     });
@@ -115,13 +116,15 @@ class _PdfViewPemasukanPengeluaranState
                 data: [
                   ...combinedList.map((item) => [
                         item['description'],
-                        item['pemasukan'],
-                        item['pengeluaran'],
+                        CurrencyFormat.convertToIdr(
+                            int.parse(item['pemasukan'].toString()), 0),
+                        CurrencyFormat.convertToIdr(
+                            int.parse(item['pengeluaran'].toString()), 0),
                       ]),
                   [
                     'Total',
-                    data.totalPemasukan.toString(),
-                    data.totalPengeluaran.toString()
+                    CurrencyFormat.convertToIdr(data.totalPemasukan, 0),
+                    CurrencyFormat.convertToIdr(data.totalPengeluaran, 0),
                   ],
                 ],
               ),

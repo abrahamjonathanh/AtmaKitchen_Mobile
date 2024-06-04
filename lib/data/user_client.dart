@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/variables.dart';
 import 'package:http/http.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 // GetX Connect Docs
 // class UserProvider extends GetConnect {
