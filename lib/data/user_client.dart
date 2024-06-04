@@ -38,10 +38,6 @@ class UserClient {
         // If credentials are not valid
       }
 
-      var externalId =
-          "123456789"; // You will supply the external id to the OneSignal SDK
-      OneSignal.login(externalId);
-
       return response;
     } catch (e) {
       return Future.error(e.toString());
@@ -66,6 +62,21 @@ class UserClient {
       var token = box.read("token");
 
       var response = await get(Uri.http(url, '/api/pelanggan/$id'), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+
+      return jsonDecode(response.body);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<Map<String, dynamic>> getEmployeeById(int id) async {
+    try {
+      var token = box.read("token");
+
+      var response = await get(Uri.http(url, '/api/karyawan/$id'), headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token"
       });

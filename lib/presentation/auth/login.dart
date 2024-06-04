@@ -13,6 +13,7 @@ import 'package:atmakitchen_mobile/widgets/atma_text_field.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -80,7 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
       var response =
           await UserClient.login(emailController.text, passwordController.text);
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      debugPrint(data.toString());
       if (response.statusCode == 200) {
         box.write('token', data['access_token']);
 
@@ -90,16 +90,27 @@ class _LoginScreenState extends State<LoginScreen> {
           var data = response['data'];
           Account accountData = Account.fromJson(data['akun']);
 
-          Customer customerData = Customer(
-              idAkun: data['id_akun'],
-              idPelanggan: data['id_pelanggan'],
-              nama: data['nama'],
-              akun: accountData);
-          debugPrint(customerData.idPelanggan.toString());
-          box.write("id_user", customerData.idPelanggan.toString());
           if (accountData.role!.role == 'Customer') {
+            Customer customerData = Customer(
+                idAkun: data['id_akun'],
+                idPelanggan: data['id_pelanggan'],
+                nama: data['nama'],
+                akun: accountData);
+            box.write("id_user", customerData.idPelanggan.toString());
+
+            // OneSignal Login
+            var externalId = customerData.idPelanggan.toString();
+            // OneSignal.login(externalId);
+            await OneSignal.User.addTagWithKey('user_id', externalId);
             return Get.to(const UserHomeScreen());
           }
+
+          Employee employeeData = Employee(
+              idAkun: data['id_akun'],
+              idKaryawan: data['id_karyawan'],
+              nama: data['nama'],
+              akun: accountData);
+          box.write("id_user", employeeData.idKaryawan.toString());
           return Get.to(const PresenceScreen());
         }
 

@@ -7,18 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:atmakitchen_mobile/pdf_view.dart';
 
 class GeneralScreen extends StatelessWidget {
   const GeneralScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //   final List<Map<String, dynamic>> statistics = [
-    //   {"title": "Testimoni", "count": 203},
-    //   {"title": "Produk", "count": 33},
-    //   {"title": "Partner", "count": 10},
-    // ];
-
     const List<List<Map<String, String>>> testimonialData = [
       [
         {
@@ -280,6 +275,34 @@ class _UserUnauthenticatedScreenState extends State<UserUnauthenticatedScreen> {
               title: "Masuk",
               icon: Icons.login,
               onTap: () => Get.to(const LoginScreen()),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const PdfView(), // Replace with your actual PdfView implementation
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.edit_document),
+                  SizedBox(width: 8),
+                  Text(
+                    "Cetak Laporan Stok Bahan Baku",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -25,41 +25,51 @@ class _UserTransactionHistoryState extends State<UserTransactionHistory> {
   void onGetCustomerTransactionHistory() async {
     var response =
         await UserClient.getCustomerById(int.parse(box.read("id_user")));
+
     if (response['data'] != null) {
-      List data = response['data']['histori_pesanan'] as List;
-      debugPrint(data[1]['status_pesanan_latest'].toString());
+      List data = response['data'] as List;
+      // debugPrint(data[1]['status_pesanan_latest'].toString());
+      debugPrint(data.toString());
 
       List<Transaction> transactionData = data
-          .map((transaction) => Transaction(
-              idPesanan: transaction['id_pesanan'].toString(),
-              idMetodePembayaran:
-                  int.parse(transaction['id_metode_pembayaran'].toString()),
-              idPelanggan: int.parse(transaction['id_pelanggan'].toString()),
-              tglOrder: transaction['tgl_order'].toString(),
-              totalDiskonPoin:
-                  int.parse(transaction['total_diskon_poin'].toString()),
-              totalPesanan: int.parse(transaction['total_pesanan'].toString()),
-              totalSetelahDiskon:
-                  int.parse(transaction['total_setelah_diskon'].toString()),
-              totalDibayarkan: transaction['total_dibayarkan'] != null
-                  ? int.parse(transaction['total_dibayarkan'].toString())
-                  : null,
-              totalTip: int.parse(transaction['total_tip'].toString()),
-              jenisPengiriman: transaction['jenis_pengiriman'].toString(),
-              buktiPembayaran: transaction['bukti_pembayaran'],
-              verifiedAt: transaction['verified_at'],
-              acceptedAt: transaction['accepted_at'],
-              createdAt: transaction['created_at'],
-              updatedAt: transaction['updated_at'],
-              deletedAt: transaction['deleted_at'],
-              detailPesanan: (transaction['detail_pesanan'] as List)
-                  .map((detail) => DetailTransaction.fromJson(detail))
-                  .toList(),
-              statusPesananLatest: transaction['status_pesanan_latest'] != null
-                  ? TransactionStatus.fromJson(
-                      transaction['status_pesanan_latest'])
-                  : null))
+          .map(
+            (transaction) => Transaction(
+                idPesanan: transaction['id_pesanan'].toString(),
+                idMetodePembayaran:
+                    int.parse(transaction['id_metode_pembayaran'].toString()),
+                idPelanggan: int.parse(transaction['id_pelanggan'].toString()),
+                tglOrder: transaction['tgl_order'].toString(),
+                totalDiskonPoin:
+                    int.parse(transaction['total_diskon_poin'].toString()),
+                totalPesanan:
+                    int.parse(transaction['total_pesanan'].toString()),
+                totalSetelahDiskon:
+                    int.parse(transaction['total_setelah_diskon'].toString()),
+                totalDibayarkan: transaction['total_dibayarkan'] != null
+                    ? int.parse(transaction['total_dibayarkan'].toString())
+                    : null,
+                totalTip: int.parse(transaction['total_tip'].toString()),
+                jenisPengiriman: transaction['jenis_pengiriman'].toString(),
+                buktiPembayaran: transaction['bukti_pembayaran'],
+                verifiedAt: transaction['verified_at'],
+                acceptedAt: transaction['accepted_at'],
+                createdAt: transaction['created_at'],
+                updatedAt: transaction['updated_at'],
+                deletedAt: transaction['deleted_at'],
+                detailPesanan: (transaction['detail_pesanan'] as List)
+                    .map((detail) => DetailTransaction.fromJson(detail))
+                    .toList(),
+                pengiriman: transaction['pengiriman'] != null
+                    ? Delivery.fromJson(transaction['pengiriman'])
+                    : null,
+                statusPesananLatest:
+                    transaction['status_pesanan_latest'] != null
+                        ? TransactionStatus.fromJson(
+                            transaction['status_pesanan_latest'])
+                        : null),
+          )
           .toList();
+
       setState(() {
         transaction = Future.value(transactionData);
         filteredTransaction = transactionData;
@@ -144,10 +154,14 @@ class _UserTransactionHistoryState extends State<UserTransactionHistory> {
                                               color: Colors.white),
                                           child: AtmaTransactions(
                                             idPesanan: e.idPesanan,
-                                            total: e.totalSetelahDiskon,
+                                            total: e.totalSetelahDiskon +
+                                                (e.pengiriman?.harga ?? 0),
                                             detailPesanan: e.detailPesanan!,
                                             transactionStatus:
                                                 e.statusPesananLatest,
+                                            onRefresh: () {
+                                              onGetCustomerTransactionHistory();
+                                            },
                                           )),
                                       const SizedBox(
                                         height: 16.0,

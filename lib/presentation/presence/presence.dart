@@ -198,7 +198,7 @@ class _PresenceScreenState extends State<PresenceScreen> {
         ],
         routes: <Widget Function()>[
           () => const PresenceScreen(),
-          () => const UserProfileScreen(),
+          () => const AdminProfileScreen(),
         ],
       ),
     );

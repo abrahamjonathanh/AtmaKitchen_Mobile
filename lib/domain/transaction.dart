@@ -19,6 +19,7 @@ class Transaction {
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
+  Delivery? pengiriman;
 
   Transaction(
       {required this.idPesanan,
@@ -38,33 +39,34 @@ class Transaction {
       this.statusPesananLatest,
       this.createdAt,
       this.updatedAt,
-      this.deletedAt});
+      this.deletedAt,
+      this.pengiriman});
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      idPesanan: json['id_pesanan'].toString(),
-      idMetodePembayaran: json['id_metode_pembayaran'] as int,
-      idPelanggan: json['id_pelanggan'] as int,
-      tglOrder: json['tgl_order'].toString(),
-      totalDiskonPoin: json['total_diskon_poin'] as int,
-      totalPesanan: json['total_pesanan'] as int,
-      totalSetelahDiskon: json['total_setelah_diskon'] as int,
-      totalDibayarkan: json['total_dibayarkan'] as int?,
-      totalTip: json['total_tip'] as int?,
-      jenisPengiriman: json['jenis_pengiriman'].toString(),
-      buktiPembayaran: json['bukti_pembayaran']?.toString(),
-      verifiedAt: json['verified_at']?.toString(),
-      acceptedAt: json['accepted_at']?.toString(),
-      detailPesanan: (json['detail_pesanan'] as List<dynamic>?)
-          ?.map((detail) => DetailTransaction.fromJson(detail))
-          .toList(),
-      statusPesananLatest: json['status_pesanan_latest'] != null
-          ? TransactionStatus.fromJson(json['status_pesanan_latest'])
-          : null,
-      createdAt: json['created_at']?.toString(),
-      updatedAt: json['updated_at']?.toString(),
-      deletedAt: json['deleted_at']?.toString(),
-    );
+        idPesanan: json['id_pesanan'].toString(),
+        idMetodePembayaran: json['id_metode_pembayaran'] as int,
+        idPelanggan: json['id_pelanggan'] as int,
+        tglOrder: json['tgl_order'].toString(),
+        totalDiskonPoin: json['total_diskon_poin'] as int,
+        totalPesanan: json['total_pesanan'] as int,
+        totalSetelahDiskon: json['total_setelah_diskon'] as int,
+        totalDibayarkan: json['total_dibayarkan'] as int?,
+        totalTip: json['total_tip'] as int?,
+        jenisPengiriman: json['jenis_pengiriman'].toString(),
+        buktiPembayaran: json['bukti_pembayaran']?.toString(),
+        verifiedAt: json['verified_at']?.toString(),
+        acceptedAt: json['accepted_at']?.toString(),
+        detailPesanan: (json['detail_pesanan'] as List<dynamic>?)
+            ?.map((detail) => DetailTransaction.fromJson(detail))
+            .toList(),
+        statusPesananLatest: json['status_pesanan_latest'] != null
+            ? TransactionStatus.fromJson(json['status_pesanan_latest'])
+            : null,
+        createdAt: json['created_at']?.toString(),
+        updatedAt: json['updated_at']?.toString(),
+        deletedAt: json['deleted_at']?.toString(),
+        pengiriman: Delivery.fromJson(json['pengiriman']));
   }
 }
 
@@ -78,6 +80,7 @@ class DetailTransaction {
   int harga;
   int jumlah;
   Product? produk;
+  Hampers? hampers;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
@@ -92,6 +95,7 @@ class DetailTransaction {
       required this.harga,
       required this.jumlah,
       this.produk,
+      this.hampers,
       this.createdAt,
       this.updatedAt,
       this.deletedAt});
@@ -110,6 +114,8 @@ class DetailTransaction {
       updatedAt: json['updated_at'].toString(),
       deletedAt: json['deleted_at'].toString(),
       produk: json['produk'] != null ? Product.fromJson(json['produk']) : null,
+      hampers:
+          json['hampers'] != null ? Hampers.fromJson(json['hampers']) : null,
     );
   }
 }
@@ -135,6 +141,41 @@ class TransactionStatus {
       idKaryawan: json['id_karyawan'].toString(),
       status: json['status'].toString(),
       createdAt: json['created_at'].toString(),
+    );
+  }
+}
+
+class Delivery {
+  final int idPengiriman;
+  final String idPesanan;
+  final int? idKurir;
+  final int? jarak;
+  final int? harga;
+  final String nama;
+  final String telepon;
+  final String alamat;
+
+  Delivery({
+    required this.idPengiriman,
+    required this.idPesanan,
+    this.idKurir,
+    this.jarak,
+    this.harga,
+    required this.nama,
+    required this.telepon,
+    required this.alamat,
+  });
+
+  factory Delivery.fromJson(Map<String, dynamic> json) {
+    return Delivery(
+      idPengiriman: json['id_pengiriman'],
+      idPesanan: json['id_pesanan'].toString(),
+      idKurir: json['id_kurir'] as int?,
+      jarak: json['jarak'] as int?,
+      harga: json['harga'] as int?,
+      nama: json['nama'].toString(),
+      telepon: json['telepon'].toString(),
+      alamat: json['alamat'].toString(),
     );
   }
 }
