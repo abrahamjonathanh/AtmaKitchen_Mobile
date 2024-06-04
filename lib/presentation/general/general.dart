@@ -1,3 +1,4 @@
+import 'package:atmakitchen_mobile/pdf_view_transaksi_penitip.dart';
 import 'package:atmakitchen_mobile/presentation/auth/login.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/profile/profile.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:atmakitchen_mobile/pdf_view.dart';
+import 'package:atmakitchen_mobile/pdf_view_pemasukan_pengeluaran.dart';
 
 class GeneralScreen extends StatelessWidget {
   const GeneralScreen({super.key});
@@ -268,6 +270,10 @@ class UserUnauthenticatedScreen extends StatefulWidget {
 }
 
 class _UserUnauthenticatedScreenState extends State<UserUnauthenticatedScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _yearController = TextEditingController();
+  int _selectedMonth = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,8 +294,7 @@ class _UserUnauthenticatedScreenState extends State<UserUnauthenticatedScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        const PdfView(), // Replace with your actual PdfView implementation
+                    builder: (context) => const PdfView(),
                   ),
                 );
               },
@@ -306,6 +311,111 @@ class _UserUnauthenticatedScreenState extends State<UserUnauthenticatedScreen> {
                   SizedBox(width: 8),
                   Text(
                     "Cetak Laporan Stok Bahan Baku",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: _yearController,
+                    decoration: const InputDecoration(labelText: 'Year'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a year';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<int>(
+                    value: _selectedMonth,
+                    decoration: const InputDecoration(labelText: 'Month'),
+                    items: List.generate(12, (index) {
+                      return DropdownMenuItem(
+                        value: index + 1,
+                        child: Text('${index + 1}'),
+                      );
+                    }),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedMonth = value!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  int year = int.parse(_yearController.text);
+                  int month = _selectedMonth;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfViewPemasukanPengeluaran(
+                        year: year,
+                        month: month,
+                      ),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.edit_document),
+                  SizedBox(width: 8),
+                  Text(
+                    "Cetak Laporan Pemasukan Pengeluaran",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  int year = int.parse(_yearController.text);
+                  int month = _selectedMonth;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfViewTransaksiPenitip(
+                        year: year,
+                        month: month,
+                      ),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.edit_document),
+                  SizedBox(width: 8),
+                  Text(
+                    "Cetak Laporan Rekap Transaksi Penitip",
                     style: TextStyle(color: Colors.black),
                   ),
                 ],
