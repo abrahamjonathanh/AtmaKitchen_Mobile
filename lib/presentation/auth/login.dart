@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:atmakitchen_mobile/constants/constants.dart';
 import 'package:atmakitchen_mobile/constants/styles.dart';
 import 'package:atmakitchen_mobile/data/user_client.dart';
@@ -10,7 +8,6 @@ import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
 import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
 import 'package:atmakitchen_mobile/widgets/atma_button.dart';
 import 'package:atmakitchen_mobile/widgets/atma_text_field.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -24,41 +21,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // final NotificationSetup _notification = NotificationSetup();
-
-  void getDeviceKey() async {
-    if (Platform.isAndroid) {
-      final String? token = await FirebaseMessaging.instance.getToken();
-      debugPrint(token);
-    }
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      // print("==========");
-      // print("=====${message.notification!.body}=====");
-      // print("==========");
-      NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-
-      print('User granted permission: ${settings.authorizationStatus}');
-      // if (message.notification != null) {
-      //   createOrderNotifications(
-      //       title: message.notification!.title,
-      //       body: message.notification!.body);
-      // }
-    });
-  }
-
   @override
   void initState() {
-    // _notification.configurePushNotifications(context);
     super.initState();
   }
 
@@ -68,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     TextEditingController passwordController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
-    // String? accessToken;
+
     void showSnackBar(String message) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -132,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 8.0,
               ),
-              // AtmaButton(textButton: "Get KEY", onPressed: getDeviceKey),
               Form(
                   key: formKey,
                   child: Column(

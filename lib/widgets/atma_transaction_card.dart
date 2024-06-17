@@ -78,7 +78,7 @@ class AtmaTransactions extends StatelessWidget {
               ],
             ),
             if (transactionStatus!.status == "Sedang dikirim kurir" ||
-                transactionStatus!.status == "Sudah dipickup")
+                transactionStatus!.status == "Siap dipickup")
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

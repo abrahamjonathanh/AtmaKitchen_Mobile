@@ -7,6 +7,7 @@ import 'package:atmakitchen_mobile/pdf_view_pemasukan_pengeluaran.dart';
 import 'package:atmakitchen_mobile/pdf_view_transaksi_penitip.dart';
 import 'package:atmakitchen_mobile/presentation/general/general.dart';
 import 'package:atmakitchen_mobile/presentation/home/user_home.dart';
+import 'package:atmakitchen_mobile/presentation/profile/saldo_pelanggan_screen.dart';
 import 'package:atmakitchen_mobile/presentation/presence/presence.dart';
 import 'package:atmakitchen_mobile/presentation/profile/user_transaction_history.dart';
 import 'package:atmakitchen_mobile/presentation/report/report_bahan_baku.dart';
@@ -119,6 +120,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             const AtmaListTile(
               title: "Informasi Pengguna",
               icon: Icons.person,
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            AtmaListTile(
+              title: "Saldo Pelanggan",
+              icon: Icons.attach_money, // Icon dollar
+              onTap: () => Get.to(const SaldoPelangganScreen()),
             ),
             const SizedBox(
               height: 8.0,

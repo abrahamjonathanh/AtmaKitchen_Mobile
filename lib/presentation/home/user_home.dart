@@ -139,7 +139,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       ))
                     },
                     child: AtmaProductCard(
-                        thumbnail: product.thumbnail?.image,
+                        thumbnail: product.thumbnail?.image ??
+                            "https://via.placeholder.com/640x480.png/00ff55?text=aut",
                         nama: product.nama,
                         ukuran: product.ukuran,
                         hargaJual: product.hargaJual,

@@ -25,9 +25,9 @@ class _UserTransactionHistoryState extends State<UserTransactionHistory> {
   void onGetCustomerTransactionHistory() async {
     var response =
         await UserClient.getCustomerById(int.parse(box.read("id_user")));
-
+    debugPrint(response['data'].toString());
     if (response['data'] != null) {
-      List data = response['data'] as List;
+      List data = response['data']['pesanan'] as List;
       // debugPrint(data[1]['status_pesanan_latest'].toString());
       debugPrint(data.toString());
 
